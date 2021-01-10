@@ -66,10 +66,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	uint8 bUsingMotionControllers : 1;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	TSubclassOf<class AMyGun> GunBluePrint;
+private:
+	AMyGun* Gun;
+	class UInputComponent* mPlayerInputComponent;
 protected:
-	
-
-
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();
 

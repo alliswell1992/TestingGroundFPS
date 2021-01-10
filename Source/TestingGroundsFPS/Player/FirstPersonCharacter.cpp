@@ -9,6 +9,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+#include "../Weapons/MyGun.h"
+
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -76,10 +78,16 @@ void AFirstPersonCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
-
+	if (!GunBluePrint) {
+		UE_LOG(LogTemp, Warning, TEXT(" Gun Blueprint is missing"));
+		return;
+	}
+	Gun = GetWorld()->SpawnActor<AMyGun>(GunBluePrint);
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
-	//FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-
+	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	// Bind fire event
+	mPlayerInputComponent->BindAction("Fire", IE_Pressed, Gun, &AMyGun::OnFire);
+	Gun->AnimInstance = Mesh1P->GetAnimInstance();
 	// Show or hide the two versions of the gun based on whether or not we're using motion controllers.
 	if (bUsingMotionControllers)
 	{
@@ -100,16 +108,13 @@ void AFirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 {
 	// set up gameplay key bindings
 	check(PlayerInputComponent);
-
+	mPlayerInputComponent = PlayerInputComponent;
 	// Bind jump events
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-
-	// Bind fire event
-	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFirstPersonCharacter::OnFire);
-
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
+
 
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AFirstPersonCharacter::OnResetVR);
 
