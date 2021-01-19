@@ -57,9 +57,13 @@ void AMannequin::Tick(float DeltaTime)
 void AMannequin::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
-
+void AMannequin::UnPossessed() {
+	Super::UnPossessed();
+	if (Gun != nullptr) {
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	}
+}
 void AMannequin::PullTrigger() {
 	Gun->OnFire();
 }
