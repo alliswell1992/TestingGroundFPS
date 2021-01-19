@@ -34,7 +34,12 @@ void AMannequin::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("Gun Blueprint Missing"))
 	}
 	Gun = GetWorld()->SpawnActor<AMyGun>(GunBlueprint);
-	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	if (IsPlayerControlled()) {
+		Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	}
+	else {
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	}
 	Gun->AnimInstance = GetMesh()->GetAnimInstance();
 	if (InputComponent != NULL) {
 		InputComponent->BindAction("Fire", IE_Pressed, this, &AMannequin::PullTrigger);
