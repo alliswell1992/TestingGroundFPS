@@ -87,7 +87,7 @@ void AFirstPersonCharacter::BeginPlay()
 	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 	// Bind fire event
 	mPlayerInputComponent->BindAction("Fire", IE_Pressed, Gun, &AMyGun::OnFire);
-	Gun->AnimInstance = Mesh1P->GetAnimInstance();
+	Gun->AnimInstance1P = Mesh1P->GetAnimInstance();
 	// Show or hide the two versions of the gun based on whether or not we're using motion controllers.
 	if (bUsingMotionControllers)
 	{

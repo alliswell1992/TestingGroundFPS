@@ -25,10 +25,14 @@ public:
 
 	/** AnimMontage to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-		UAnimMontage* FireAnimation;
-
+	UAnimMontage* FireAnimation1P;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-	UAnimInstance* AnimInstance;
+	UAnimMontage* FireAnimation3P;
+
+	UPROPERTY()
+	UAnimInstance* AnimInstance1P;
+	UPROPERTY()
+	UAnimInstance* AnimInstance3P;
 	/** Gun mesh: 1st person view (seen only by self) */
 	//UPROPERTY(VisibleDefaultsOnly, Category = "Mesh")
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
