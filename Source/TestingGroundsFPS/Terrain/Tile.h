@@ -42,12 +42,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 private:
+	template<class T>
+	void RandomlyPlaceActors(TSubclassOf<T> ToSpawn, int MinSpawn = 1, int MaxSpawn = 1, float Radius = 500.f, float MinScale = 1, float MaxScale = 1);
 	void PositionNavMeshBoundsVolume();
 	bool CanSpawnAtLocation(FVector Location, float Radius);
-	TArray<FSpawnPositon> RandomSpawnPositions(int MinSpawn, int MaxSpawn, float Radius, float MinScale, float MaxScale);
+	//TArray<FSpawnPositon> RandomSpawnPositions(int MinSpawn, int MaxSpawn, float Radius, float MinScale, float MaxScale);
 	bool FindEmptyLocation(FVector& OutLocation, float Radius);
 	void PlaceActor(TSubclassOf<AActor> ToSpawn, FSpawnPositon SpawnPosition);
-	void PlaceAIPawn(TSubclassOf<APawn> ToSpawn, FSpawnPositon SpawnPosition);
+	void PlaceActor(TSubclassOf<APawn> ToSpawn, FSpawnPositon SpawnPosition);
 	UActorPool* Pool;
 	AActor* NavMeshBoundsVolume;
 };
