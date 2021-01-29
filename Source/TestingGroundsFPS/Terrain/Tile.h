@@ -24,6 +24,8 @@ public:
 	ATile();
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn = 1, int MaxSpawn = 1, float Radius = 500.f, float MinScale = 1, float MaxScale = 1);
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void PlaceAIPawns(TSubclassOf<APawn> ToSpawn, int MinSpawn = 1, int MaxSpawn = 1, float Radius = 500.f);
 	UFUNCTION(BlueprintCallable, Category = "Pool")
 	void SetPool(UActorPool* PoolToSet);
 protected:
@@ -44,7 +46,8 @@ private:
 	bool CanSpawnAtLocation(FVector Location, float Radius);
 	TArray<FSpawnPositon> RandomSpawnPositions(int MinSpawn, int MaxSpawn, float Radius, float MinScale, float MaxScale);
 	bool FindEmptyLocation(FVector& OutLocation, float Radius);
-	void PlaceActor(TSubclassOf<AActor> ToSpawn, FSpawnPositon& SpawnPosition);
+	void PlaceActor(TSubclassOf<AActor> ToSpawn, FSpawnPositon SpawnPosition);
+	void PlaceAIPawn(TSubclassOf<APawn> ToSpawn, FSpawnPositon SpawnPosition);
 	UActorPool* Pool;
 	AActor* NavMeshBoundsVolume;
 };
