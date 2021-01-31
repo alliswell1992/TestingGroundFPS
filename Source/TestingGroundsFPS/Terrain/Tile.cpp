@@ -38,7 +38,9 @@ void ATile::BeginPlay()
 	Super::BeginPlay();
 }
 void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Pool->Return(NavMeshBoundsVolume);
+	if (Pool != nullptr && NavMeshBoundsVolume != nullptr) {
+		Pool->Return(NavMeshBoundsVolume);
+	}	
 }
 void ATile::PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn, float Radius, float MinScale, float MaxScale) {
 	RandomlyPlaceActors(ToSpawn, MinSpawn, MaxSpawn, Radius, MinScale, MaxScale);
@@ -83,11 +85,10 @@ void ATile::PlaceActor(TSubclassOf<AActor> ToSpawn, FSpawnPositon SpawnPosition)
 
 }
 void ATile::PlaceActor(TSubclassOf<APawn> ToSpawn, FSpawnPositon SpawnPosition) {
-	APawn* Spawned = GetWorld()->SpawnActor<APawn>(ToSpawn);
+	FRotator Rotation = FRotator(0, SpawnPosition.Rotation, 0);
+	APawn* Spawned = GetWorld()->SpawnActor<APawn>(ToSpawn, SpawnPosition.SpawnPoint, Rotation);
 	if (Spawned) {
-		Spawned->SetActorRelativeLocation(SpawnPosition.SpawnPoint);
 		Spawned->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
-		Spawned->SetActorRotation(FRotator(0, SpawnPosition.Rotation, 0));
 		Spawned->SpawnDefaultController();
 		Spawned->Tags.Add(FName("Enemy"));
 	}
